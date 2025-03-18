@@ -7,7 +7,7 @@ const {
   deleteOrder,
 } = require("../controllers/ordersController");
 
-const verifyToken = require("../middlewares/authMiddleware");
+const verifyToken = require("../middlewares/firebaseAuth");
 
 module.exports = (app) => {
 

@@ -4,7 +4,7 @@ const {
   getOrderPayement,
 } = require("../controllers/payementController");
 
-const verifyToken = require("../middlewares/authMiddleware");
+const verifyToken = require("../middlewares/firebaseAuth");
 
 module.exports = (app) => {
   

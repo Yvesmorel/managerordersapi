@@ -1,7 +1,6 @@
 const { admin } = require("../config/firebase");
 
-const verifyToken = async (req, res, next) => {
-
+module.exports = async (req, res, next) => {
   const idToken = req.cookies.access_token;
 
   // const idToken=req.body.accessToken
@@ -18,5 +17,3 @@ const verifyToken = async (req, res, next) => {
     return res.status(403).json({ error: "Unauthorized" });
   }
 };
-
-module.exports = verifyToken;

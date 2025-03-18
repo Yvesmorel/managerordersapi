@@ -4,10 +4,11 @@ const connectDB = async () => {
   try {
     mongoose.set("strictQuery", false);
     await mongoose.connect(process.env.db_uri);
-    console.log("Connected!");
+    console.log("Mongo onnected!");
     
   } catch (error) {
-    console.log(error.message);
+
+    console.log("ERRRORRRRR",error.message);
     process.exit();
   }
 };

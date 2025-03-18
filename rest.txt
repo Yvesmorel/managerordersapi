@@ -1,1 +1,14 @@
 https://github.com/JustFS/mastering-front-end/tree/356d73bb85faaa96f8329e5870d23bb74cfa4a82/backend
+db_password="QuMYgSdiRnToLAZp"
+db_user="yvesmorelkacou842"
+db_uri="mongodb+srv://yvesmorelkacou842:QuMYgSdiRnToLAZp@cluster0.pmsfv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+PORT=5000
+
+FIREBASE_API_KEY=AIzaSyAI_64RBh0kc66kKR1VWZA8pLj0mVF-SVk
+FIREBASE_AUTH_DOMAIN=manageordersapi.firebaseapp.com
+FIREBASE_PROJECT_ID=manageordersapi
+FIREBASE_STORAGE_BUCKET=manageordersapi.firebasestorage.app
+FIREBASE_MESSAGING_SENDER_ID=108863568748
+FIREBASE_APP_ID=1:108863568748:web:397673cebbdee6689f1149
+

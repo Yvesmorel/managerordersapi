@@ -1,18 +1,18 @@
 const Users = require("../models/Users");
 
-module.exports.createUser = async (req, res) => {
+const createUser = async (email, id, res) => {
   try {
-    
     const userData = {
-      name: "yves morel",
-      email: "hackerYves842@gmail.com",
-      password: "1234567",
+      email,
+      userId: id,
     };
 
-    const user = await Users.create(userData);
-    res.status(200).json({ message: "user created", user });
-
+    await Users.create(userData);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+};
+
+module.exports = {
+  createUser,
 };

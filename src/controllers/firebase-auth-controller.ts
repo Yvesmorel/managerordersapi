@@ -7,30 +7,35 @@ const {
   sendPasswordResetEmail,
 } = require("../config/firebase");
 
+const { createUser } = require("../controllers/userController");
 const auth = getAuth();
 
 class FirebaseAuthController {
-  
   registerUser(req, res) {
-
     const { email, password } = req.body;
 
     if (!email || !password) {
-
       return res.status(422).json({
         email: "Email is required",
         password: "Password is required",
       });
-
     }
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         sendEmailVerification(auth.currentUser)
           .then(() => {
-            res.status(201).json({
-              message: "Verification email sent! User created successfully!",
-            });
+            createUser(email, auth.currentUser.uid, res)
+              .then((_) => {
+                res.status(201).json({
+                  message:
+                    "Verification email sent! User created successfully!",
+                });
+              })
+              .catch((error) => {
+                console.error(error);
+                res.status(500).json({ error: "Error to create user" });
+              });
           })
           .catch((error) => {
             console.error(error);
@@ -42,7 +47,6 @@ class FirebaseAuthController {
           error.message || "An error occurred while registering user";
         res.status(500).json({ error: errorMessage });
       });
-
   }
 
   loginUser(req, res) {

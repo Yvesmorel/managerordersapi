@@ -9,8 +9,6 @@ const {
 
 const { createAtempt } = require("../controllers/bruteForceAttemptController");
 
-const { brutForceProtection } = require("../services/bruteForceProtection");
-
 const { createUser } = require("../controllers/userController");
 const auth = getAuth();
 
@@ -77,6 +75,7 @@ class FirebaseAuthController {
       })
       .catch((error) => {
         if (error.code === "auth/invalid-credential") {
+
           createAtempt(req, res).catch((_) =>
             res
               .status(500)

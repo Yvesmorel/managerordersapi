@@ -7,6 +7,10 @@ const {
   sendPasswordResetEmail,
 } = require("../config/firebase");
 
+const { createAtempt } = require("../controllers/bruteForceAttemptController");
+
+const { brutForceProtection } = require("../services/bruteForceProtection");
+
 const { createUser } = require("../controllers/userController");
 const auth = getAuth();
 
@@ -72,9 +76,17 @@ class FirebaseAuthController {
         }
       })
       .catch((error) => {
-        console.error(error);
+        if (error.code === "auth/invalid-credential") {
+          createAtempt(req, res).catch((_) =>
+            res
+              .status(500)
+              .json({ error: "An error occurred while logging in" })
+          );
+        }
+
         const errorMessage =
           error.message || "An error occurred while logging in";
+
         res.status(500).json({ error: errorMessage });
       });
   }

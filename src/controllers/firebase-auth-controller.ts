@@ -74,19 +74,25 @@ class FirebaseAuthController {
         }
       })
       .catch((error) => {
-        if (error.code === "auth/invalid-credential") {
-
-          createAtempt(req, res).catch((_) =>
-            res
-              .status(500)
-              .json({ error: "An error occurred while logging in" })
-          );
+        if (error.message.includes("auth/invalid-credential")) {
+          console.log(error.message);
+          createAtempt(req, res)
+            .then(() =>
+              res
+                .status(500)
+                .json({ error: "An error occurred while logging in attemp" })
+            )
+            .catch((_) =>
+              res
+                .status(500)
+                .json({ error: "An error occurred while logging in attemp" })
+            );
         }
 
         const errorMessage =
           error.message || "An error occurred while logging in";
 
-        res.status(500).json({ error: errorMessage });
+        res.status(500).json({ error: errorMessage+"dddd"});
       });
   }
 

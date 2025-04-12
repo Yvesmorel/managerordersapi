@@ -10,6 +10,8 @@ const {
 const {
   createAtempt,
   findAttempt,
+  updateAttempt,
+  deleteAttempt,
 } = require("../controllers/bruteForceAttemptController");
 
 const { convertDateToMilliscnd } = require("../lib/utils");
@@ -28,14 +30,13 @@ class FirebaseAuthController {
     }
 
     try {
-      // Création de l'utilisateur
+     
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
 
-      // Envoi de l'email de vérification
       try {
         await sendEmailVerification(auth.currentUser);
       } catch (emailError) {
@@ -45,7 +46,6 @@ class FirebaseAuthController {
           .json({ error: "Error sending email verification" });
       }
 
-      // Création de l'utilisateur dans la base de données ou autre traitement
       try {
         await createUser(email, auth.currentUser.uid, res);
       } catch (createUserError) {
@@ -78,21 +78,23 @@ class FirebaseAuthController {
       const attempt = await findAttempt([
         {
           ipAddress: req.clientIp,
-          isBlocked: true,
         },
       ]);
 
-      if (
-        attempt !== null &&
-        convertDateToMilliscnd(attempt.blockedUntil) >= Date.now()
-      ) {
-        
-        res.status(400).json({
-          message: "Your are blocked",
-          blockedUntil: attempt.blockedUntil,
-        });
+      if (attempt !== null && attempt.isBlocked === true) {
+        if (convertDateToMilliscnd(attempt.blockedUntil) >= Date.now()) {
+          res.status(400).json({
+            message: "Your are blocked",
+            blockedUntil: attempt.blockedUntil,
+          });
 
-        return;
+          return;
+        } else
+          await updateAttempt(req.clientIp, {
+            attempts: 0,
+            isBlocked: false,
+            blockedUntil: null,
+          });
       }
 
       const userCredential = await signInWithEmailAndPassword(
@@ -100,6 +102,9 @@ class FirebaseAuthController {
         email,
         password
       );
+
+      if (attempt !== null) deleteAttempt(req.clientIp);
+
       const idToken = userCredential._tokenResponse.idToken;
 
       if (idToken) {

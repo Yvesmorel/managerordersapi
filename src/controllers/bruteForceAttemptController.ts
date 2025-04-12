@@ -14,18 +14,17 @@ const createAtempt = async (req, res) => {
     ]);
 
     if (attempt !== null) {
-      if (attempt.attempts > 5) {
+      if (attempt.attempts > 2) {
         const dayJsDate = dayjs();
-        const dayJsDatePlusOneHour = dayJsDate.add(1, "hour");
+        const dayJsDatePlusOneHour = dayJsDate.add(5, "minute");
 
         if (!attempt.isBlocked)
-          await updateAttemp(attempData.ipAddress, {
+          await updateAttempt(attempData.ipAddress, {
             blockedUntil: new Date(dayJsDatePlusOneHour),
             isBlocked: true,
           });
-    
       } else
-        await updateAttemp(attempData.ipAddress, {
+        await updateAttempt(attempData.ipAddress, {
           $inc: { attempts: 1 },
         });
     } else await BruteForceProtection.create(attempData);
@@ -39,14 +38,13 @@ const createAtempt = async (req, res) => {
 const findAttempt = async (findOptions) => {
   try {
     const attempt = await BruteForceProtection.findOne(...findOptions).exec();
-
     return attempt;
   } catch (error) {
     throw new Error("Auth/Error");
   }
 };
 
-const updateAttemp = async (ipAddress, updatedData) => {
+const updateAttempt = async (ipAddress, updatedData) => {
   try {
     const filter = { ipAddress };
     await BruteForceProtection.findOneAndUpdate(
@@ -61,7 +59,16 @@ const updateAttemp = async (ipAddress, updatedData) => {
   }
 };
 
+const deleteAttempt = async (ipAddress) => {
+  try {
+    await BruteForceProtection.deleteOne({ ipAddress });
+  } catch (error) {
+    throw new Error("Delete Failed");
+  }
+};
 module.exports = {
   createAtempt,
   findAttempt,
+  updateAttempt,
+  deleteAttempt
 };

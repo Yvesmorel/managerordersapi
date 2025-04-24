@@ -7,15 +7,15 @@ const {
   deleteOrder,
 } = require("../controllers/ordersController");
 
-const verifyToken = require("../middlewares/firebaseAuth");
+const verifyFirebaseToken = require("../middlewares/firebaseAuth");
 
 module.exports = (app) => {
 
-  app.post("/orders", verifyToken, createOrder);
-  app.get("/orders/:id", verifyToken, getOrder);
-  app.get("/users/:id/orders", verifyToken, getUserOrders);
-  app.get("/orders", verifyToken, getOrders);
-  app.put("/orders/:id", verifyToken, editOrder);
-  app.delete("/orders/:id", verifyToken, editOrder);
+  app.post("/orders", verifyFirebaseToken, createOrder);
+  app.get("/orders/:id", verifyFirebaseToken, getOrder);
+  app.get("/users/:id/orders", verifyFirebaseToken, getUserOrders);
+  app.get("/orders", verifyFirebaseToken, getOrders);
+  app.put("/orders/:id", verifyFirebaseToken, editOrder);
+  app.delete("/orders/:id", verifyFirebaseToken, editOrder);
  
 };

@@ -4,16 +4,16 @@ const {
   getOrderPayement,
 } = require("../controllers/payementController");
 
-const verifyToken = require("../middlewares/firebaseAuth");
+const verifyFirebaseToken = require("../middlewares/firebaseAuth");
 
 module.exports = (app) => {
   
   app.post(
     "/users/:userId/orders/:orderId/payments",
-    verifyToken,
+    verifyFirebaseToken,
     createPayement
   );
 
-  app.get("/users/:id/payments", verifyToken, getUserPayements);
-  app.get("/orders/:id/payments", verifyToken, getOrderPayement);
+  app.get("/users/:id/payments", verifyFirebaseToken, getUserPayements);
+  app.get("/orders/:id/payments", verifyFirebaseToken, getOrderPayement);
 };

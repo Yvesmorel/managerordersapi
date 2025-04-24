@@ -7,7 +7,6 @@ const {
 } = require("../controllers/userController");
 
 const verifyToken = require("../middlewares/firebaseAuth");
-const verifyAdminToken = require("../middlewares/jwtAuth");
 
 module.exports = (app) => {
 
@@ -17,6 +16,6 @@ module.exports = (app) => {
   app.put("/users/:id", verifyToken, editUser);
   app.get("/users/:id", verifyToken, getUser);
 
-  app.delete("/users/:id", verifyAdminToken, deleteUser);
+  app.delete("/users/:id",verifyToken, deleteUser);
   
 };

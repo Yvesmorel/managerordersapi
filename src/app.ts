@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const headerParser = require("header-parser");
 const requestIp = require("request-ip");
-
+const verifyAdminToken = require("./middlewares/jwtAuth");
 dotenv.config();
 
 mdbConnect();
@@ -17,6 +17,7 @@ app
   .use(headerParser)
   .use(bodyParser.json())
   .use(cookieParser())
-  .use(requestIp.mw());
+  .use(requestIp.mw())
+  .use(verifyAdminToken);
 
 require("./server")(app);

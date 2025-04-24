@@ -40,7 +40,7 @@ class FirebaseAuthController {
       try {
         await sendEmailVerification(auth.currentUser);
       } catch (emailError) {
-        console.error(emailError);
+      
         return res
           .status(500)
           .json({ error: "Error sending email verification" });
@@ -49,7 +49,7 @@ class FirebaseAuthController {
       try {
         await createUser(email, auth.currentUser.uid, res);
       } catch (createUserError) {
-        console.error(createUserError);
+       
         return res.status(500).json({ error: "Error to create user" });
       }
 
@@ -57,7 +57,7 @@ class FirebaseAuthController {
         message: "Verification email sent! User created successfully!",
       });
     } catch (error) {
-      console.error(error);
+      
       const errorMessage =
         error.message || "An error occurred while registering user";
       return res.status(500).json({ error: errorMessage });
@@ -66,7 +66,7 @@ class FirebaseAuthController {
 
   async loginUser(req, res) {
     const { email, password } = req.body;
-
+ 
     if (!email || !password) {
       return res.status(422).json({
         email: "Email is required",
@@ -143,7 +143,7 @@ class FirebaseAuthController {
       res.clearCookie("access_token");
       return res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
-      console.error(error);
+ 
       return res.status(500).json({ error: "Internal Server Error" });
     }
   }
@@ -161,7 +161,7 @@ class FirebaseAuthController {
         .status(200)
         .json({ message: "Password reset email sent successfully!" });
     } catch (error) {
-      console.error(error);
+      
       return res.status(500).json({ error: "Internal Server Error" });
     }
   }

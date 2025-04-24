@@ -6,7 +6,7 @@ const maxWrongAttemptsByIPperDay = 100;
 
 async function brutForceProtection(req, res) {
   const ipAddr = req.connection.remoteAddress;
-  console.log(ipAddr);
+
 
   res.status(400).json(ipAddr);
 }
